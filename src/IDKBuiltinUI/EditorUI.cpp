@@ -22,6 +22,7 @@ EditorUI_Module::init( idk::EngineAPI &api )
     io.Fonts->AddFontDefault();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    // io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
     io.ConfigDockingTransparentPayload = true;
 
     ImGui::StyleColorsLight();
@@ -93,6 +94,10 @@ EditorUI_Module::stage_B( idk::EngineAPI &api )
         ImGui::ShowDemoWindow(&m_show_ImGui_demo);
     }
 
+    ImGui::Begin("Editor Dockspace");
+    ImGui::DockSpace(ImGui::GetID("Editor-Dockspace"));
+    ImGui::End();
+
     this->_menubar(api);
     this->_tab(api);
 
@@ -151,6 +156,13 @@ EditorUI_Module::stage_B( idk::EngineAPI &api )
 
 
     ImGui::Render();
+
+    // if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    // {
+        // ImGui::UpdatePlatformWindows();
+    //     ImGui::RenderPlatformWindowsDefault();
+    // }
+
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 

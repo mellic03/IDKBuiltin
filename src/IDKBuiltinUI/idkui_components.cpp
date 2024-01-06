@@ -8,7 +8,8 @@
 
 
 void
-idkg::ui::transform_component( idk::Engine &engine, idk::Camera &camera, idk::Transform_CS &CS, int obj_id )
+idkg::ui::transform_component( idk::Engine &engine, idk::Camera &camera, idk::Transform_CS &CS,
+                               int obj_id, float tsnap, float rsnap )
 {
     ImGuizmo::SetOrthographic(false);
 
@@ -31,18 +32,30 @@ idkg::ui::transform_component( idk::Engine &engine, idk::Camera &camera, idk::Tr
 
     ImGuizmo::MODE mode = ImGuizmo::MODE::LOCAL;
 
+    glm::vec3 tsnp = glm::vec3(tsnap);
+    glm::vec3 rsnp = glm::vec3(rsnap);
+    float *ts      = nullptr;
+    float *rs      = nullptr;
+
     if (engine.eventManager().keylog().keyDown(idk::Keycode::LSHIFT))
     {
         mode = ImGuizmo::MODE::WORLD;
     }
 
+    if (engine.eventManager().keylog().keyDown(idk::Keycode::LALT))
+    {
+        ts = &tsnp[0];
+        rs = &rsnp[0];
+    }
 
     ImGuizmo::Manipulate(
         glm::value_ptr(view),
         glm::value_ptr(proj),
         ImGuizmo::OPERATION::TRANSLATE,
         mode,
-        glm::value_ptr(transform)
+        glm::value_ptr(transform),
+        nullptr,
+        ts
     );
 
     ImGuizmo::Manipulate(
@@ -50,7 +63,9 @@ idkg::ui::transform_component( idk::Engine &engine, idk::Camera &camera, idk::Tr
         glm::value_ptr(proj),
         ImGuizmo::OPERATION::ROTATE,
         mode,
-        glm::value_ptr(transform)
+        glm::value_ptr(transform),
+        nullptr,
+        rs
     );
 
     model = glm::inverse(parent) * transform;

@@ -5,7 +5,8 @@
 
 #include <idk_imgui/imgui.hpp>
 // #include "common/idk_imgui_extra.hpp"
-#include "icon-headers/idk_Icons.hpp"
+#include <idk_icons/idk_Icons.hpp>
+#include <deque>
 
 
 class EditorUI_Module: public idk::Module
@@ -23,10 +24,27 @@ private:
 
     // // Editor Tabs
     // // -----------------------------------------------------------------------------------------
-    int         m_selected_object = -1;
+    static constexpr int MAX_SELECTION_HISTORY = 10;
+    std::deque<int> m_selection;
 
+    float       m_tsnap = 0.25f;
+    float       m_rsnap = 0.25f;
+
+    void _select_object( int id )
+    {
+        m_selection.push_front(id);
+    
+        if (m_selection.size() > MAX_SELECTION_HISTORY)
+        {
+            m_selection.pop_back();
+        }
+    };
+    int         _get_selection() { return m_selection.empty() ? 0 : m_selection.front(); };
+
+    void        _tab_scene_treenode( idk::EngineAPI &, int );
     void        _tab_scene_hierarchy( idk::EngineAPI & );
     void        _tab_inspect( idk::EngineAPI &, int object_id );
+    void        _tab_editor_properties( idk::EngineAPI & );
     void        _tab( idk::EngineAPI & );
     // // -----------------------------------------------------------------------------------------
 

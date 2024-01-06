@@ -19,7 +19,6 @@ EditorTab::models( idk::EngineAPI &api )
         ImGui::Dummy({0, 10});
     }
 
-
     ImGui::End();
 }
 

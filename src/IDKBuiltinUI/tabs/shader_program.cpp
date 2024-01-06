@@ -34,30 +34,28 @@ EditorTab::shader_programs( idk::EngineAPI &api )
     auto &ren    = api.getRenderer();
 
     auto &programs = ren.getPrograms();
+    static std::string selected = "";
 
     ImGui::Begin("Shader Programs");
+
+    if (ImGui::BeginTable("table1", 2, EditorTab::resizeable_table_flags))
     {
-        static std::string selected = "";
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
 
-        if (ImGui::BeginTable("table1", 2, EditorTab::resizeable_table_flags))
+        for (auto &[name, program]: programs)
         {
-            ImGui::TableNextRow();
-            ImGui::TableNextColumn();
-
-            for (auto &[name, program]: programs)
+            if (ImGui::Selectable(name.c_str(), selected == name))
             {
-                if (ImGui::Selectable(name.c_str(), selected == name))
-                {
-                    selected = name;
-                }
+                selected = name;
             }
-
-            ImGui::TableNextColumn();
-            tab_shader_program_edit(selected, programs[selected]);
-            
-            ImGui::EndTable();
         }
 
+        ImGui::TableNextColumn();
+        tab_shader_program_edit(selected, programs[selected]);
+        
+        ImGui::EndTable();
     }
+
     ImGui::End();
 }

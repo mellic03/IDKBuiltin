@@ -13,7 +13,7 @@ IDK_EXPORT_API
             editor_ui = new EditorUI_Module;
         }
 
-        return reinterpret_cast<idk::Module *>(editor_ui);
+        return dynamic_cast<idk::Module *>(editor_ui);
     }
 )
 

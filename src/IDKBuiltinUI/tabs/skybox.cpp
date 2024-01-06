@@ -1,5 +1,7 @@
 #include "EditorUI-tabs.hpp"
-#include "../icon-headers/idk_Icons.hpp"
+#include <idk_icons/idk_Icons.hpp>
+
+#include <filesystem>
 
 
 void
@@ -32,17 +34,19 @@ EditorTab::skybox( idk::EngineAPI &api )
             }
 
 
+            static std::string selection = "";
             static bool open = false;
-            std::string selection = "";
 
             if (ImGui::Button(IDK_ICON_FOLDER_OPENED "Load"))
             {
+                ImGui::OpenPopup("File Selection");
                 open = true;
             }
 
-            if (open)
+            if (idkImGui::fileSelectPopup("File Selection", open, "./", selection))
             {
-                EditorUI::fileSelectPopup("./", selection, open);
+                std::string filepath = std::filesystem::relative(selection);
+                ren.loadSkybox(filepath + "/");
             }
 
             ImGui::EndTable();

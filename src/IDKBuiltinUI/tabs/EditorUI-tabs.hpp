@@ -11,20 +11,16 @@ namespace EditorUI
 
     template <typename T, typename lambda_t>
     void selection_splitWindow2( idk::Allocator<T> &container, const lambda_t &callback );
-
-    bool splitWindow_begin( const std::string &label );
-    void splitWindow_split();
-    void splitWindow_end();
-
 };
 
 
 namespace EditorTab
 {
     void shader_programs( idk::EngineAPI & );
-    void skybox  ( idk::EngineAPI & );
-    void cameras ( idk::EngineAPI & );
-    void models  ( idk::EngineAPI & );
+    void skybox    ( idk::EngineAPI & );
+    void cameras   ( idk::EngineAPI & );
+    void models    ( idk::EngineAPI & );
+    void editor    ( idk::EngineAPI & );
 
     constexpr auto resizeable_table_flags =   ImGuiTableFlags_SizingStretchSame
                                             | ImGuiTableFlags_Resizable

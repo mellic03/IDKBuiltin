@@ -1,4 +1,17 @@
 #include "../EditorUI.hpp"
+#include "../common/idk_imgui_extra.hpp"
+
+
+
+
+static void
+menubar_save( idk::EngineAPI &api )
+{
+    if (ImGui::MenuItem(IDK_ICON_SAVE " Save", "CTRL + S"))
+    {
+
+    }
+}
 
 
 void
@@ -6,6 +19,8 @@ EditorUI_Module::_menubar( idk::EngineAPI &api )
 {
     auto &engine = api.getEngine();
     auto &ren    = api.getRenderer();
+
+    static bool popup_open = false;
 
     if (ImGui::BeginMainMenuBar())
     {
@@ -16,16 +31,11 @@ EditorUI_Module::_menubar( idk::EngineAPI &api )
 
             }
 
-            if (ImGui::MenuItem(IDK_ICON_SAVE " Save", "CTRL + S"))
-            {
-
-            }
+            // menubar_save(api);
 
             if (ImGui::MenuItem(IDK_ICON_SAVE_AS " Save As", "CTRL + SHFT + S"))
             {
-                // std::string selection;
-                // static bool open = true;
-                // EditorUI::fileSelectPopup("./", selection, open);
+                popup_open = true;
             }
 
             if (ImGui::MenuItem("Load", "CTRL + L"))
@@ -49,5 +59,19 @@ EditorUI_Module::_menubar( idk::EngineAPI &api )
 
         ImGui::EndMainMenuBar();
     }
+
+
+    static std::string selection = "";
+
+    if (popup_open)
+    {
+        ImGui::OpenPopup("File Selection");
+    }
+
+    if (idkImGui::fileSelectPopup("File Selection", popup_open, "./", selection))
+    {
+        std::cout << "saving to " << selection << "\n";
+    }
+
 }
 
